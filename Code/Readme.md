@@ -70,3 +70,29 @@ Para poder implementar el guardar fotos en una seccion de favoritos, vemos que e
 
 Vamos a construir una etiqueta **span** en el html, para que si existe algun error lo puedamos visualizar alli. Dentro de la funcion getRandomDog colocamos un if para que si existe algun error (y esto lo hacemos consultando el status code de la respuesta, que sea diferente a 200) lo enviamos como valor del span. Colocamos una url sin la API Key para utilizarla en la funcion de favoritos, asi observamos como se despliega el error en el HTML.
 
+## POST
+
+Vamos a utilizar este metodo para llamar una API que lo que hace es guardar una foto como favorita. 
+
+Cuando llamamos a **fetch** y queremos utilizar un metodo distinto a GET, por ejemplo POST debemos de pasarlo como segundo argumento de fetch (el primero es la url). 
+
+Además debemos enviar **headers y body**.
+
+El body lleva la información que solicita la API, en este caso el id de la imagen. Esta información no se la podemos enviar como un ojeto de javaScript sino que debemos de hacerlo como un string. Esto es porque, esta información la leera nuestro backend, y si estamos utilizando otro lenguaje de programación debemos de enviarla en formato string, para que la pueda entender. 
+
+El id de la imagen que colocamos en el body la estamos obteniendo al hacer un console.log de la información que recibimos al hacer GET a la URL de favoritos. 
+
+En el html le colocamos el id a los botones que seran los que ejecuten la función de guardar la imagen, y le colocamos también dentro de la etiqueta del html que en **onclick** ejecuta la función. 
+
+## MANIPULANDO EL DOM
+
+En el if de la función cargar favoritos (**getFavouritesDog()**), imprimimos en la etiqueta span si existe un error al hacer el llamado de la función. Pero no estamos utilizando ningun else, que la función entra en él cuando el status code es 200. 
+
+Entonces cuando cargamos la función recibimos un **array**, dentro del cual están las urls, que utilizaremos para poder mostrar las fotos guardadas como favoritas. Por lo tanto debemos recorrer ese array y sacar las urls, utilizando **forEach**. Y luego deberemos manipular el **DOM** para crear las etiquetas que necesitamos según la cantidad de urls que tenemos guardadas como favoritas. 
+
+Para el atributo src dentro de la etiqueta img, obtenemos la url que viene desde data, en cada objeto que nosotros llamamos myDogs. 
+
+Vamos a modificar la función de **saveFavoriteDog()** para que reciba como argumento un **id**, el cual será el valor que viene con la imagen desde la API, que utilizaremos para guardar esa foto como favorita. Borramos el llamado de esta función que haciamos con onclick en cada etiqueta button, ya que lo haremos con js. Por lo tanto debemos de obtener cada boton en la función de **getRandomDog()**.
+
+Entonces ahora podremos llamar a la funcion de guardar en cada uno de los botones, y al igual que hacemos con las imgenes que obtenemos el valor para cada una, vamos a obtener el id que necesitamos para cada una de las llamadas a la función. Debemos utilizar una arrow function para que no se ejecute directamente al recargar la página.
+
