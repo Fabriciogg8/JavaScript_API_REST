@@ -96,3 +96,56 @@ Vamos a modificar la función de **saveFavoriteDog()** para que reciba como argu
 
 Entonces ahora podremos llamar a la funcion de guardar en cada uno de los botones, y al igual que hacemos con las imgenes que obtenemos el valor para cada una, vamos a obtener el id que necesitamos para cada una de las llamadas a la función. Debemos utilizar una arrow function para que no se ejecute directamente al recargar la página.
 
+## DELETE
+
+Vamos a crear una función para **sacar (delete)** fotos de favoritos. Para esto precisamos utilzar una url distinta según nos indica la documentación de la API, este endpoint necesita el id de la foto. Por lo tanto este endpoint es dinámico, se modifica por cada una de las urls. Entonces vamos a guardar en una constante una arrow function, que recibe el id, y se lo pasa a la URL. 
+
+El método a utilizar en la función es DELETE. No es necesario enviar información de headers y body, ya que el id lo estamos enviando en la URL. 
+
+Tenemos que agregar esta función a los botones que construimos en el forEach de la función que obtiene los perros favoritos. Colocamos a los botones el método onclick, y envolvemos la función en una arrow function.  
+
+Vamos a colocar el llamado de la función cargar favoritos, cada vez que guardamos una foto favorita. El problema que surge es que duplica todas las fotos, ya que no estamos limpiando la sección de html, por lo que se crean las nuevas etiquetas a continuación de las que ya teniamos. Por lo tanto en la funcion donde obtenemos los favoritos debemos eliminar el contenido antes de hacer el forEach. 
+
+## Headers HTTP
+
+Nos ayudan a que el backend sepa como le estamos enviando la inforamción, en el body. 
+
+Hay muchos tipos:
+* content-type
+* authorization
+* cookies
+* location
+* etc, etc
+
+## Header de autorización
+
+Vamos a eliminar la api_key que estabamos mandando dentro de la url como query parameter, pero solo para la url de favoritos. Después en la función que enviamos esta URL, colocamos que el metodo es GET, y dentro del headers debemos de colocar **X-API-KEY**, como dice la documentación, y ahí colocamos el valor de la api_key. También agregué este valor en la función de saveFavoriteDog(id) porque estamos utilizando la misma url. 
+
+Si bien es un poco más segura esta forma de enviar la API, no es dificil de violar los headers.
+
+## Content type
+
+Como dijimos es para que el frontend y el backend se pongan de acuerdo en el tipo de contenido que van a hablar. 
+
+Nosotros estamos utilizando application/json pero existen otros:
+* applications/xml
+* application/zip
+* application/x-www-form-urlencoded
+También podemos enviar archivos:
+* audio/mpeg
+* audio/x-ms-wma
+* audio/x-wav
+* image/gif
+* image/jpeg
+* application/msword
+* etc, etc
+
+## FormData
+
+Vamos a crear una opción para **subir fotos**. Para esto creamos una sección en html con un formulario, donde podremos mediante un input subir una foto. El type del input es **file**. Creamos un boton que al presinoarlo ejecute la función que le llamaremos **uploadPhoto()**, y la creamos en js. 
+
+En nuestra función vamos a utilizar **FormData**, el cual es apropiado para poder obtener los valores que vienen de los formularios en HTML, como este caso. El name que le colocamos a cada uno de los input que tengamos en el fomrulario, será la llave para poder acceder al valor desde **FormData**. 
+
+Para poder subir la imagen la documentación de la API, nos dice que tenemos un endpoint (/images/upload) en el cual debemos usar el método POST. Además nos indica que en el body debe ir un file. 
+
+Al construir el fetch colocamos el metodo 'POST', pero lo más importante es que cambia el content-type siendo en este caso multipart/form-data. Y luego podemos simplemente en el body enviar la instancia de nuestro FormData. 
